@@ -268,6 +268,15 @@
         /* --- Mix&Match Modal --- */
         .modal-overlay {
             position: fixed;
+            inset: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            background: rgba(0, 0, 0, 0.85);
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+
             top: 0;
             left: 0;
             width: 100%;
@@ -287,7 +296,13 @@
             visibility: visible;
         }
         .modal-content {
+            margin: 2rem auto;
+            max-width: 600px;
+            width: 90%;
             background: linear-gradient(145deg, #1e1e2f, #10101d);
+            border-radius: 16px;
+            padding: 2rem;
+
             border: 1px solid #444;
             border-radius: 16px;
             padding: 2rem;
