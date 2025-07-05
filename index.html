@@ -1,0 +1,968 @@
+<!DOCTYPE html>
+<html lang="el">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - Vision Sound Hub</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&family=Segoe+UI:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        /* --- General Body --- */
+        body {
+            background-color: #0b0b1a;
+            color: #eee;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* --- Main Navigation Styles --- */
+        .main-navigation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.5rem 1rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+            background-color: #0f0f1f;
+        }
+        .nav-btn {
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 700;
+            font-size: 0.95rem;
+            text-decoration: none;
+            white-space: nowrap;
+            padding: 0.7rem 1.6rem;
+            border-radius: 999px;
+            border: 1px solid #555;
+            cursor: pointer;
+            color: #ddd;
+            background: linear-gradient(145deg, #2c2c3a, #1a1a2a);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255,255,255,0.05);
+            transition: all 0.3s ease;
+        }
+        .nav-btn:hover {
+            background: linear-gradient(145deg, #3c3c4a, #2a2a3a);
+            border-color: #c5c5ff;
+            color: #fff;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.4), 
+                        inset 0 1px 1px rgba(255,255,255,0.1),
+                        0 0 15px rgba(160, 176, 255, 0.4),
+                        0 0 20px rgba(126, 87, 194, 0.3);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+
+        /* --- Main Content Section --- */
+        .services-section {
+            padding: 3rem 1rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: #fff;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            text-align: center;
+        }
+
+        /* --- Mix & Match Button --- */
+        .mix-match-container {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+        .btn-mix-match {
+            font-family: 'Segoe UI', sans-serif;
+            font-weight: 700;
+            font-size: 1.2rem;
+            padding: 0.8rem 2rem;
+            border-radius: 12px;
+            border: 1px solid #7e57c2;
+            color: #fff;
+            background: linear-gradient(145deg, rgba(126, 87, 194, 0.25), rgba(66, 165, 245, 0.25));
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-mix-match:hover {
+            background: linear-gradient(145deg, rgba(126, 87, 194, 0.4), rgba(66, 165, 245, 0.4));
+            box-shadow: 0 0 20px rgba(126, 87, 194, 0.5);
+            transform: scale(1.05);
+        }
+
+        /* --- Accordion Container --- */
+        .service-accordion {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .service-toggle-btn {
+            background: linear-gradient(145deg, #2c2c3a, #1a1a2a);
+            border: 1px solid #444;
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            width: 100%;
+            text-align: left;
+            color: #eee;
+            cursor: pointer;
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+        .service-toggle-btn:hover {
+            background: linear-gradient(145deg, #3c3c4a, #2a2a3a);
+            border-color: #7e57c2;
+        }
+        .service-toggle-btn .fa-chevron-down {
+            transition: transform 0.4s ease;
+        }
+        .service-toggle-btn.active .fa-chevron-down {
+            transform: rotate(180deg);
+        }
+        .service-content {
+            background: linear-gradient(145deg, #1e1e2f, #10101d);
+            border: 1px solid #3a3a4a;
+            border-top: none;
+            border-radius: 0 0 16px 16px;
+            padding: 0 2rem;
+            max-height: 0;
+            opacity: 0;
+            overflow: hidden;
+            transition: max-height 0.9s ease, opacity 0.7s ease, padding 0.7s ease;
+        }
+        .service-content.visible {
+            max-height: 2000px;
+            opacity: 1;
+            padding: 2rem;
+        }
+        .service-header .tagline {
+            font-size: 1.1rem;
+            color: #aaa;
+            margin: 0.5rem 0 1.5rem 0;
+            font-style: italic;
+        }
+        .service-body h4 {
+            font-size: 1.2rem;
+            color: #fff;
+            margin-top: 2rem;
+            margin-bottom: 1rem;
+            border-bottom: 1px solid #3a3a4a;
+            padding-bottom: 0.5rem;
+        }
+        .service-body h4:first-child { margin-top: 0; }
+        .service-body ul {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 1rem 0;
+            color: #ccc;
+        }
+        .service-body li {
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .service-body .fa-check, .service-body .fa-plus-circle { color: #42a5f5; }
+        
+        .service-package {
+            margin-bottom: 2.5rem;
+        }
+        .service-package-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #3a3a4a;
+            padding-bottom: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        .service-package-header h4 {
+            margin: 0;
+            border: none;
+            padding: 0;
+        }
+        .service-package-header .price {
+            font-size: 2rem;
+            color: #7e57c2;
+            font-weight: 700;
+        }
+
+        .visuals-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 1.5rem;
+            background-color: rgba(0,0,0,0.15);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        .visuals-table th, .visuals-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #3a3a4a;
+        }
+        .visuals-table thead th { background-color: rgba(255,255,255,0.05); }
+        .visuals-table tbody tr:last-child td { border-bottom: none; }
+        .visuals-table th {
+            color: #aaa;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        .visuals-table td { color: #ccc; }
+        .visuals-table .service-name { font-weight: 700; color: #fff; }
+        .visuals-table .service-price {
+            font-weight: 700;
+            color: #00ff99;
+            text-align: right;
+            white-space: nowrap;
+        }
+        .delivery-info, .tech-specs {
+            font-style: italic;
+            color: #aaa;
+            margin-top: 1.5rem;
+            text-align: center;
+        }
+        
+        .custom-quote-section {
+            max-width: 800px;
+            margin: 4rem auto 2rem auto;
+            padding: 2rem;
+            background: rgba(42, 42, 60, 0.5);
+            border: 1px solid #3a3a4a;
+            border-radius: 16px;
+            text-align: center;
+        }
+        .custom-quote-section h3 {
+            font-size: 1.5rem;
+            color: #fff;
+            margin-top: 0;
+            margin-bottom: 1rem;
+        }
+        .custom-quote-section p {
+            color: #ccc;
+            line-height: 1.7;
+            margin: 0;
+        }
+        .custom-quote-section a {
+            color: #7e57c2;
+            text-decoration: none;
+            font-weight: 700;
+            transition: color 0.3s ease;
+        }
+        .custom-quote-section a:hover {
+            color: #a0b0ff;
+        }
+        
+        /* --- Mix&Match Modal --- */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(10px);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: linear-gradient(145deg, #1e1e2f, #10101d);
+            border: 1px solid #444;
+            border-radius: 16px;
+            padding: 2rem;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.visible .modal-content {
+            transform: scale(1);
+        }
+        .modal-close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 2rem;
+            color: #888;
+            cursor: pointer;
+            transition: color 0.3s ease, transform 0.3s ease;
+        }
+        .modal-close:hover {
+            color: #fff;
+            transform: rotate(90deg);
+        }
+        .modal-content h3 {
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        .service-selection-list {
+            list-style: none;
+            padding: 0;
+            margin: 0 0 2rem 0;
+            max-height: 40vh;
+            overflow-y: auto;
+        }
+        .service-selection-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .service-selection-list li:last-child { border-bottom: none; }
+        .service-selection-list label {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            cursor: pointer;
+            flex-grow: 1;
+        }
+        .service-selection-list .item-details {
+             flex-grow: 1;
+        }
+        .service-selection-list .item-name {
+            color: #ddd;
+            font-weight: 600;
+        }
+        .service-selection-list .item-price {
+            color: #00ff99;
+            font-weight: 700;
+        }
+        .service-selection-list input[type="checkbox"] {
+            margin-left: 1rem;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        .total-price-display {
+            margin-top: 1rem;
+            padding: 1rem;
+            background-color: rgba(0,0,0,0.2);
+            border-radius: 12px;
+            text-align: center;
+        }
+        .total-price-display .total-label {
+            font-size: 1rem;
+            color: #aaa;
+            text-transform: uppercase;
+        }
+        .total-price-display .total-amount {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #fff;
+            display: block;
+        }
+        
+        .quote-generator-area {
+            margin-top: 1.5rem;
+            position: relative;
+        }
+        #quote-textarea {
+            width: 100%;
+            background-color: rgba(0,0,0,0.25);
+            border: 1px solid #444;
+            border-radius: 8px;
+            color: #ccc;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.95rem;
+            padding: 1rem;
+            box-sizing: border-box;
+            resize: vertical;
+            min-height: 120px;
+        }
+        .btn-copy-quote {
+            display: block;
+            width: 100%;
+            margin-top: 1rem;
+            padding: 0.8rem;
+            border-radius: 12px;
+            border: 1px solid #42a5f5;
+            background: linear-gradient(145deg, rgba(66, 165, 245, 0.2), rgba(66, 165, 245, 0.3));
+            color: #fff;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        .btn-copy-quote:hover {
+            background: linear-gradient(145deg, rgba(66, 165, 245, 0.3), rgba(66, 165, 245, 0.4));
+            box-shadow: 0 0 15px rgba(66, 165, 245, 0.4);
+        }
+        .copy-feedback {
+            position: absolute;
+            bottom: 1rem;
+            left: 50%;
+            transform: translate(-50%, 50px);
+            background-color: #00c853;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            pointer-events: none;
+        }
+        .copy-feedback.visible {
+            opacity: 1;
+            visibility: visible;
+            transform: translate(-50%, 0);
+        }
+        
+        /* --- ΣΤΥΛ ΓΙΑ ΕΠΙΛΟΓΕΑ ΠΟΣΟΤΗΤΑΣ --- */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        .quantity-selector .quantity-btn {
+            background-color: #3a3a4a;
+            border: 1px solid #555;
+            color: #fff;
+            width: 28px;
+            height: 28px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            font-weight: 700;
+            line-height: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.2s;
+            user-select: none;
+        }
+        .quantity-selector .quantity-btn:hover {
+            background-color: #4a4a5a;
+        }
+        .quantity-selector .quantity-input {
+            width: 40px;
+            text-align: center;
+            background-color: transparent;
+            border: none;
+            color: #fff;
+            font-size: 1.1rem;
+            font-weight: 700;
+            -moz-appearance: textfield; /* Firefox */
+        }
+        .quantity-selector .quantity-input::-webkit-outer-spin-button,
+        .quantity-selector .quantity-input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+<header class="main-navigation">
+    <a href="#" class="nav-btn">Home</a>
+    <a href="#" class="nav-btn">Pricing</a>
+    <a href="#" class="nav-btn">Beats</a>
+    <a href="#" class="nav-btn">Zairok (Manga)</a>
+</header>
+
+<main class="services-section">
+    <h2 class="section-title">Τιμοκατάλογος Υπηρεσιών</h2>
+
+    <div class="mix-match-container">
+        <button id="open-mix-match-btn" class="btn-mix-match"><i class="fas fa-blender-phone"></i> Φτιάξε το Δικό σου Πακέτο</button>
+    </div>
+
+    <div class="service-accordion">
+        <!-- Service 1: Mix & Master -->
+        <div class="accordion-item">
+            <button class="service-toggle-btn">
+                <span><i class="fas fa-sliders-h"></i> Mix & Master</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="service-content">
+                <div class="service-header">
+                    <p class="tagline">Επαγγελματικός ήχος με ψυχή. Επιλέξτε μίξη, mastering ή και τα δύο.</p>
+                </div>
+                <div class="service-body">
+                    
+                    <div class="service-package" data-service-name="Μίξη (Mixing)" data-service-price="30">
+                        <div class="service-package-header">
+                            <h4>Μίξη (Mixing)</h4>
+                            <span class="price">€30</span>
+                        </div>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Ρύθμιση επιπέδων</li>
+                            <li><i class="fas fa-check"></i> Καθαρές φωνές / δυναμικά τύμπανα</li>
+                            <li><i class="fas fa-check"></i> Καθαρισμός θορύβων & ισορροπία</li>
+                        </ul>
+                    </div>
+
+                    <div class="service-package" data-service-name="Mastering" data-service-price="20">
+                         <div class="service-package-header">
+                            <h4>Μάστερινγκ (Mastering)</h4>
+                            <span class="price">€20</span>
+                        </div>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Τελική ένταση / loudness</li>
+                            <li><i class="fas fa-check"></i> EQ / stereo image / glue</li>
+                            <li><i class="fas fa-check"></i> Έτοιμο για Spotify, YouTube, παντού.</li>
+                        </ul>
+                    </div>
+
+                    <div class="extras-section">
+                        <h4>Extras (Ισχύουν και για τις δύο υπηρεσίες)</h4>
+                        <ul>
+                            <li data-service-name="Studio Session (Αττική - ανά ώρα)" data-service-price="10" data-quantifiable="true">
+                                <i class="fas fa-plus-circle"></i><strong>Studio Session (Αττική):</strong> +10€/ώρα
+                            </li>
+                            <li data-service-name="Pitch Correction (Autotune)" data-service-price="10">
+                                <i class="fas fa-plus-circle"></i><strong>Pitch Correction:</strong> +10€
+                            </li>
+                            <li data-service-name="Extra Κανάλια (ανά 3)" data-service-price="5">
+                                <i class="fas fa-plus-circle"></i><strong>Extra Κανάλια:</strong> +5€ ανά 3 νέα κανάλια
+                            </li>
+                            <li><i class="fas fa-plus-circle"></i><strong>Διάρκεια:</strong> Μέχρι 3:30 λεπτά</li>
+                            <li data-service-name="Επιπλέον Χρόνος (ανά λεπτό)" data-service-price="7" data-quantifiable="true">
+                                <i class="fas fa-plus-circle"></i><strong>Επιπλέον Χρόνος:</strong> +7€ για κάθε επόμενο λεπτό
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service 2: Music for Brands -->
+        <div class="accordion-item">
+            <button class="service-toggle-btn">
+                <span><i class="fas fa-copyright"></i> Music for Brands / Sync Licensing</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="service-content">
+                <div class="service-header">
+                    <p class="tagline">Original μουσική για την καμπάνια, τη διαφήμιση, τη σειρά ή το game σου.</p>
+                </div>
+                <div class="service-body">
+                     <p class="description">
+                        Δουλεύω custom tracks για εμπορική χρήση. Επικοινώνησε μαζί μου για να συζητήσουμε τις ανάγκες του project σου και τις επιλογές licensing.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Service 3: Covers & Visuals -->
+        <div class="accordion-item">
+            <button class="service-toggle-btn">
+                <span><i class="fas fa-palette"></i> Covers & Visuals</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="service-content">
+                <div class="service-header">
+                    <p class="tagline">Εικόνες με ταυτότητα, συνδυάζοντας AI και ανθρώπινη αισθητική.</p>
+                </div>
+                <div class="service-body">
+                    <table class="visuals-table">
+                        <thead>
+                            <tr>
+                                <th>Υπηρεσία</th>
+                                <th style="text-align: right;">Τιμή</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-service-name="SoulBlend Cover" data-service-price="35">
+                                <td>
+                                    <div class="service-name">SoulBlend</div>
+                                    <small>AI + Photoshop, curated art image</small>
+                                </td>
+                                <td class="service-price">35–50€</td>
+                            </tr>
+                            <tr data-service-name="AlterMe Cover" data-service-price="50">
+                                <td>
+                                    <div class="service-name">AlterMe</div>
+                                    <small>Μεταμόρφωση από φωτογραφία σε χαρακτήρα</small>
+                                </td>
+                                <td class="service-price">50–70€</td>
+                            </tr>
+                            <tr data-service-name="RAWtoCOVER" data-service-price="40">
+                                <td>
+                                    <div class="service-name">RAWtoCOVER</div>
+                                    <small>Επεξεργασία πραγματικής φωτογραφίας</small>
+                                </td>
+                                <td class="service-price">40–55€</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <p class="delivery-info">
+                        Παράδοση σε όλα τα formats: Instagram Post, Reel, Facebook & YouTube Banner, Spotify Cover.
+                    </p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Service 4: Video Editing -->
+        <div class="accordion-item">
+            <button class="service-toggle-btn">
+                <span><i class="fas fa-video"></i> Video Editing & Promos</span>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="service-content">
+                <div class="service-body">
+                    <h4>SocialScroll</h4>
+                    <p class="tagline" style="margin-top: -0.5rem; margin-bottom: 1rem;">Promo videos με εικόνες & stock footage.</p>
+                    <table class="visuals-table">
+                         <tbody>
+                            <tr data-service-name="SocialScroll (1 video)" data-service-price="60">
+                                <td>1 video</td>
+                                <td class="service-price">60€</td>
+                            </tr>
+                            <tr data-service-name="SocialScroll (3-pack)" data-service-price="150">
+                                <td>3-pack</td>
+                                <td class="service-price">150€</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>ReCut</h4>
+                    <p class="tagline" style="margin-top: -0.5rem; margin-bottom: 1rem;">Μοντάζ με πλάνα του πελάτη.</p>
+                    <table class="visuals-table">
+                        <tbody>
+                            <tr data-service-name="ReCut (1 video)" data-service-price="80">
+                                <td>1 video</td>
+                                <td class="service-price">80–100€</td>
+                            </tr>
+                             <tr data-service-name="ReCut (3-pack)" data-service-price="210">
+                                <td>3-pack</td>
+                                <td class="service-price">210–230€</td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <h4>Artist Shot+Cut</h4>
+                    <table class="visuals-table">
+                         <thead>
+                            <tr>
+                                <th>Πακέτο</th>
+                                <th>Περιγραφή</th>
+                                <th style="text-align: right;">Τιμή</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-service-name="Artist Single Reel Pack" data-service-price="55">
+                                <td>Single Reel Pack</td>
+                                <td>1 γύρισμα (1–2 ώρες), 1 reel, raw αρχεία</td>
+                                <td class="service-price">55–60€</td>
+                            </tr>
+                             <tr data-service-name="Artist 4x Reel Pack" data-service-price="170">
+                                <td>4x Reel Pack</td>
+                                <td>1 μέρα γύρισμα (έως 3 ώρες), 4 reels, raw αρχεία</td>
+                                <td class="service-price">170€</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                     <p class="tech-specs">
+                        Color grading, text animation, pro editing (rotoscoping effects ανάλογα το ύφος).
+                    </p>
+
+                    <h4>Business Shot+Cut</h4>
+                     <table class="visuals-table">
+                         <thead>
+                            <tr>
+                                <th>Πακέτο</th>
+                                <th>Περιγραφή</th>
+                                <th style="text-align: right;">Τιμή</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-service-name="Business 2 Reels Pack" data-service-price="150">
+                                <td>2 Reels Pack</td>
+                                <td>1–2 ώρες γύρισμα, 2 reels, raw αρχεία</td>
+                                <td class="service-price">150€</td>
+                            </tr>
+                             <tr data-service-name="Business 4 Reels Pack" data-service-price="260">
+                                <td>4 Reels Pack</td>
+                                <td>1–4 ώρες γύρισμα, 4 reels, raw αρχεία</td>
+                                <td class="service-price">260€</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    
+                    <h4><i class="fas fa-robot"></i> AI Video με VEo 3 – Vision Sound Cut</h4>
+                     <table class="visuals-table">
+                         <thead>
+                            <tr>
+                                <th>Πακέτο</th>
+                                <th>Περιγραφή</th>
+                                <th style="text-align: right;">Τιμή</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr data-service-name="AI Single Promo Video" data-service-price="140">
+                                <td>Single Promo Video</td>
+                                <td>1 video 15–30 δευτ. + μοντάζ</td>
+                                <td class="service-price">140€</td>
+                            </tr>
+                             <tr data-service-name="AI Full Concept Video" data-service-price="180">
+                                <td>Full Concept Video</td>
+                                <td>3–5 VEo clips + storytelling</td>
+                                <td class="service-price">180–220€</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="custom-quote-section">
+        <h3>Έχετε Ειδικές Απαιτήσεις;</h3>
+        <p>
+            Για οποιαδήποτε απορία ή για να συζητήσουμε μια προσαρμοσμένη τιμή για τις ανάγκες σας, μη διστάσετε να επικοινωνήσετε. Στείλτε ένα αναλυτικό email με το project σας στο <a href="mailto:studiovisionsound@gmail.com">studiovisionsound@gmail.com</a> ή ένα μήνυμα στο <a href="https://www.instagram.com/visionsoundhub.gr" target="_blank" rel="noopener noreferrer">Instagram</a> και θα λάβετε άμεσα μια εξατομικευμένη προσφορά.
+        </p>
+    </div>
+</main>
+
+<!-- Mix & Match Modal -->
+<div id="mix-match-modal" class="modal-overlay">
+    <div class="modal-content">
+        <span class="modal-close" id="mix-match-close-btn">&times;</span>
+        <h3>Φτιάξε το Πακέτο σου</h3>
+        <ul class="service-selection-list" id="service-selection-list">
+            <!-- Services will be populated by JavaScript -->
+        </ul>
+        
+        <div class="total-price-display">
+            <span class="total-label">Ενδεικτική Τιμή</span>
+            <span class="total-amount" id="total-price">€0</span>
+        </div>
+
+        <div class="quote-generator-area">
+            <textarea id="quote-textarea" readonly rows="6" placeholder="Επιλέξτε υπηρεσίες για να δημιουργηθεί το μήνυμα..."></textarea>
+            <button id="copy-quote-btn" class="btn-copy-quote">
+                <i class="fas fa-copy"></i> Αντιγραφή Κειμένου
+            </button>
+            <span id="copy-feedback" class="copy-feedback">Αντιγράφηκε!</span>
+        </div>
+    </div>
+</div>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    
+    // --- ELEMENTS ---
+    const accordionItems = document.querySelectorAll('.accordion-item');
+    const openMixMatchBtn = document.getElementById('open-mix-match-btn');
+    const mixMatchModal = document.getElementById('mix-match-modal');
+    const mixMatchCloseBtn = document.getElementById('mix-match-close-btn');
+    const serviceSelectionList = document.getElementById('service-selection-list');
+    const totalPriceEl = document.getElementById('total-price');
+    const quoteTextarea = document.getElementById('quote-textarea');
+    const copyQuoteBtn = document.getElementById('copy-quote-btn');
+    const copyFeedback = document.getElementById('copy-feedback');
+
+    // --- ACCORDION LOGIC ---
+    accordionItems.forEach(item => {
+        const button = item.querySelector('.service-toggle-btn');
+        const content = item.querySelector('.service-content');
+        button.addEventListener('click', () => {
+            const wasVisible = content.classList.contains('visible');
+            accordionItems.forEach(otherItem => {
+                if (otherItem !== item) {
+                    otherItem.querySelector('.service-toggle-btn').classList.remove('active');
+                    otherItem.querySelector('.service-content').classList.remove('visible');
+                }
+            });
+            if (wasVisible) {
+                button.classList.remove('active');
+                content.classList.remove('visible');
+            } else {
+                button.classList.add('active');
+                content.classList.add('visible');
+            }
+        });
+    });
+
+    // --- MIX & MATCH MODAL LOGIC ---
+
+    function getServicesFromPage() {
+        const services = [];
+        const serviceElements = document.querySelectorAll('[data-service-name][data-service-price]');
+        serviceElements.forEach(el => {
+            services.push({
+                name: el.dataset.serviceName,
+                price: parseFloat(el.dataset.servicePrice),
+                quantifiable: el.dataset.quantifiable === 'true'
+            });
+        });
+        return services;
+    }
+
+    function populateMixMatchList(services) {
+        serviceSelectionList.innerHTML = '';
+        services.forEach((service, index) => {
+            const li = document.createElement('li');
+            li.dataset.name = service.name;
+            li.dataset.price = service.price;
+
+            if (service.quantifiable) {
+                li.dataset.quantifiable = true;
+                li.innerHTML = `
+                    <div class="item-details">
+                        <span class="item-name">${service.name}</span>
+                    </div>
+                    <div class="quantity-selector">
+                        <button class="quantity-btn minus" aria-label="Μείωση ποσότητας">-</button>
+                        <input type="number" class="quantity-input" value="0" min="0" readonly>
+                        <button class="quantity-btn plus" aria-label="Αύξηση ποσότητας">+</button>
+                    </div>
+                `;
+            } else {
+                li.innerHTML = `
+                    <label for="service-${index}">
+                        <div class="item-details">
+                            <span class="item-name">${service.name}</span>
+                        </div>
+                        <span class="item-price">€${service.price}</span>
+                        <input type="checkbox" id="service-${index}">
+                    </label>
+                `;
+            }
+            serviceSelectionList.appendChild(li);
+        });
+        addServiceListeners();
+    }
+
+    function addServiceListeners() {
+        // Checkbox listeners
+        serviceSelectionList.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+            checkbox.addEventListener('change', updateQuoteAndPrice);
+        });
+
+        // Quantity button listeners
+        serviceSelectionList.querySelectorAll('.quantity-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                const input = button.parentElement.querySelector('.quantity-input');
+                let currentValue = parseInt(input.value, 10);
+                if (button.classList.contains('plus')) {
+                    currentValue++;
+                } else if (button.classList.contains('minus')) {
+                    currentValue = Math.max(0, currentValue - 1);
+                }
+                input.value = currentValue;
+                updateQuoteAndPrice();
+            });
+        });
+    }
+
+    function updateQuoteAndPrice() {
+        let total = 0;
+        let servicesList = '';
+        
+        // Process all service list items
+        serviceSelectionList.querySelectorAll('li').forEach(li => {
+            const name = li.dataset.name;
+            const price = parseFloat(li.dataset.price);
+
+            if (li.dataset.quantifiable) {
+                const quantity = parseInt(li.querySelector('.quantity-input').value, 10);
+                if (quantity > 0) {
+                    const itemTotal = price * quantity;
+                    total += itemTotal;
+                    servicesList += `- ${name} x ${quantity} (€${itemTotal})\n`;
+                }
+            } else {
+                const checkbox = li.querySelector('input[type="checkbox"]');
+                if (checkbox && checkbox.checked) {
+                    total += price;
+                    servicesList += `- ${name} (€${price})\n`;
+                }
+            }
+        });
+
+        totalPriceEl.textContent = `€${total}`;
+
+        if (servicesList) {
+            let messageBody = "Καλησπέρα, θα ήθελα να χρησιμοποιήσω τις υπηρεσίες σας και ενδιαφέρομαι για τις παρακάτω:\n\n";
+            messageBody += servicesList;
+            messageBody += `\nΣυνολική ενδεικτική τιμή: €${total}\n\n`;
+            messageBody += "Ευχαριστώ!";
+            quoteTextarea.value = messageBody;
+        } else {
+            quoteTextarea.value = '';
+        }
+    }
+
+    function copyQuoteToClipboard() {
+        if (quoteTextarea.value === '') {
+            alert('Παρακαλώ επιλέξτε τουλάχιστον μία υπηρεσία για να δημιουργηθεί το μήνυμα.');
+            return;
+        }
+        
+        quoteTextarea.select();
+        quoteTextarea.setSelectionRange(0, 99999);
+
+        try {
+            document.execCommand('copy');
+            copyFeedback.classList.add('visible');
+            setTimeout(() => {
+                copyFeedback.classList.remove('visible');
+            }, 2000);
+        } catch (err) {
+            alert('Η αντιγραφή απέτυχε. Παρακαλώ αντιγράψτε το κείμενο χειροκίνητα.');
+        }
+        
+        window.getSelection().removeAllRanges();
+    }
+
+    function openMixMatchModal() {
+        const services = getServicesFromPage();
+        populateMixMatchList(services);
+        updateQuoteAndPrice();
+        mixMatchModal.classList.add('visible');
+        document.body.classList.add('modal-open');
+    }
+
+    function closeMixMatchModal() {
+        mixMatchModal.classList.remove('visible');
+        document.body.classList.remove('modal-open');
+    }
+
+    // --- EVENT LISTENERS ---
+    openMixMatchBtn.addEventListener('click', openMixMatchModal);
+    mixMatchCloseBtn.addEventListener('click', closeMixMatchModal);
+    mixMatchModal.addEventListener('click', e => {
+        if (e.target === mixMatchModal) {
+            closeMixMatchModal();
+        }
+    });
+    copyQuoteBtn.addEventListener('click', copyQuoteToClipboard);
+
+});
+</script>
+
+</body>
+</html>
