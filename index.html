@@ -780,7 +780,11 @@
                 <i class="fas fa-copy"></i> Αντιγραφή Κειμένου
             </button>
             <span id="copy-feedback" class="copy-feedback">Αντιγράφηκε!</span>
-        </div>
+        
+        <button id="close-modal-btn" class="btn-copy-quote" style="margin-top: 1.5rem; background: transparent; border: 1px solid #888; color: #ccc;">
+            <i class="fas fa-times"></i> Κλείσιμο
+        </button>
+</div>
     </div>
 </div>
 
@@ -967,6 +971,10 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // --- EVENT LISTENERS ---
+    const closeModalBtn = document.getElementById('close-modal-btn');
+    if (closeModalBtn) {
+        closeModalBtn.addEventListener('click', closeMixMatchModal);
+    }
     openMixMatchBtn.addEventListener('click', openMixMatchModal);
     mixMatchCloseBtn.addEventListener('click', closeMixMatchModal);
     mixMatchModal.addEventListener('click', e => {
