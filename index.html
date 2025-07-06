@@ -16,11 +16,23 @@
             color: #eee;
             font-family: 'Inter', sans-serif;
             margin: 0;
-            padding: 0;
-            min-height: 100vh;
+            /* Add padding at the bottom to avoid footer overlap */
+            padding-bottom: 100px; 
         }
         body.modal-open {
             overflow: hidden;
+        }
+
+        /* --- ΝΕΑ ΣΤΥΛ ΓΙΑ HEADER --- */
+        .site-header {
+            width: 100%;
+            background-color: #000;
+            text-align: center;
+        }
+        .site-header img {
+            max-width: 100%;
+            height: auto;
+            display: block;
         }
 
         /* --- Main Navigation Styles --- */
@@ -32,6 +44,8 @@
             gap: 1rem;
             flex-wrap: wrap;
             background-color: #0f0f1f;
+            border-top: 1px solid #2a2a3a;
+            border-bottom: 1px solid #2a2a3a;
         }
         .nav-btn {
             font-family: 'Segoe UI', sans-serif;
@@ -145,7 +159,7 @@
             transition: max-height 0.9s ease, opacity 0.7s ease, padding 0.7s ease;
         }
         .service-content.visible {
-            max-height: 2000px;
+            max-height: 3000px; /* Increased for more content */
             opacity: 1;
             padding: 2rem;
         }
@@ -268,15 +282,6 @@
         /* --- Mix&Match Modal --- */
         .modal-overlay {
             position: fixed;
-            inset: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 9999;
-            background: rgba(0, 0, 0, 0.85);
-            overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
-
             top: 0;
             left: 0;
             width: 100%;
@@ -296,13 +301,7 @@
             visibility: visible;
         }
         .modal-content {
-            margin: 2rem auto;
-            max-width: 600px;
-            width: 90%;
             background: linear-gradient(145deg, #1e1e2f, #10101d);
-            border-radius: 16px;
-            padding: 2rem;
-
             border: 1px solid #444;
             border-radius: 16px;
             padding: 2rem;
@@ -333,40 +332,43 @@
             margin-bottom: 1.5rem;
             text-align: center;
         }
-        .service-selection-list {
+        .service-selection-container {
             list-style: none;
             padding: 0;
             margin: 0 0 2rem 0;
             max-height: 40vh;
             overflow-y: auto;
         }
-        .service-selection-list li {
+        .service-selection-container li {
             padding: 0.75rem 0;
             border-bottom: 1px solid #333;
             display: flex;
             align-items: center;
             justify-content: space-between;
         }
-        .service-selection-list li:last-child { border-bottom: none; }
-        .service-selection-list label {
+        .service-selection-container li:last-child { border-bottom: none; }
+        .service-selection-container label {
             display: flex;
             align-items: center;
             justify-content: space-between;
             cursor: pointer;
             flex-grow: 1;
         }
-        .service-selection-list .item-details {
+        .service-selection-container .item-details {
              flex-grow: 1;
+             display: flex;
+             align-items: center;
         }
-        .service-selection-list .item-name {
+        .service-selection-container .item-name {
             color: #ddd;
             font-weight: 600;
         }
-        .service-selection-list .item-price {
+        .service-selection-container .item-price {
             color: #00ff99;
             font-weight: 700;
+            margin-right: 1rem;
         }
-        .service-selection-list input[type="checkbox"] {
+        .service-selection-container input[type="checkbox"] {
             margin-left: 1rem;
             width: 20px;
             height: 20px;
@@ -430,6 +432,24 @@
             background: linear-gradient(145deg, rgba(66, 165, 245, 0.3), rgba(66, 165, 245, 0.4));
             box-shadow: 0 0 15px rgba(66, 165, 245, 0.4);
         }
+        .btn-close-modal {
+            display: block;
+            width: 100%;
+            margin-top: 0.75rem;
+            padding: 0.8rem;
+            border-radius: 12px;
+            border: 1px solid #888;
+            background: linear-gradient(145deg, #4a4a5a, #3a3a4a);
+            color: #ddd;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .btn-close-modal:hover {
+            background: linear-gradient(145deg, #5a5a6a, #4a4a5a);
+            border-color: #aaa;
+        }
         .copy-feedback {
             position: absolute;
             bottom: 1rem;
@@ -452,7 +472,6 @@
             transform: translate(-50%, 0);
         }
         
-        /* --- ΣΤΥΛ ΓΙΑ ΕΠΙΛΟΓΕΑ ΠΟΣΟΤΗΤΑΣ --- */
         .quantity-selector {
             display: flex;
             align-items: center;
@@ -494,16 +513,138 @@
             margin: 0;
         }
 
+        .modal-category-toggle {
+            width: 100%;
+            padding: 1rem 0.5rem;
+            background: none;
+            border: none;
+            border-bottom: 1px solid #3a3a4a;
+            color: #7e57c2;
+            text-transform: uppercase;
+            font-size: 1rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background-color 0.3s ease;
+        }
+        .modal-category-toggle:hover {
+            background-color: rgba(126, 87, 194, 0.1);
+        }
+        .modal-category-toggle .fa-chevron-down {
+            transition: transform 0.3s ease;
+        }
+        .modal-category-toggle.active .fa-chevron-down {
+            transform: rotate(180deg);
+        }
+        .modal-category-content {
+            max-height: 0;
+            overflow: hidden;
+            opacity: 0;
+            transition: max-height 0.5s ease-out, opacity 0.5s ease-out, padding 0.5s ease-out;
+            padding: 0 1rem;
+        }
+        .modal-category-content.visible {
+            max-height: 1000px;
+            opacity: 1;
+            padding: 1rem;
+        }
+        .info-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 8px;
+            color: #888;
+            border: 1px solid #888;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            cursor: pointer;
+            position: relative;
+            user-select: none;
+        }
+        .info-icon .info-tooltip {
+            position: absolute;
+            bottom: 140%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 250px;
+            background-color: #1a1a2a;
+            color: #ccc;
+            padding: 1rem;
+            border-radius: 8px;
+            border: 1px solid #555;
+            font-size: 0.9rem;
+            font-weight: 400;
+            line-height: 1.5;
+            text-align: left;
+            visibility: hidden;
+            opacity: 0;
+            transition: opacity 0.3s ease, visibility 0.3s ease, bottom 0.3s ease;
+            z-index: 10;
+            pointer-events: none;
+        }
+        .info-icon:hover .info-tooltip {
+            visibility: visible;
+            opacity: 1;
+            bottom: 125%;
+        }
+
+        /* --- ΝΕΑ ΣΤΥΛ ΓΙΑ FOOTER --- */
+        .site-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background-color: #0f0f1f;
+            padding: 1rem;
+            text-align: center;
+            border-top: 1px solid #2a2a3a;
+            z-index: 100;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .footer-links a {
+            color: #ccc;
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.3s ease;
+        }
+        .footer-links a:hover {
+            color: #fff;
+        }
+        .footer-links a i {
+            margin-right: 0.5rem;
+        }
+        .copyright-text {
+            font-size: 0.8rem;
+            color: #888;
+        }
+
     </style>
 </head>
 <body>
 
-<header class="main-navigation">
+<!-- ΝΕΑ ΚΕΦΑΛΙΔΑ -->
+<header class="site-header">
+    <img src="https://github.com/Visionsoundhub/vybezmadethis.beats/blob/main/vybezmadethisnewlogoheader.png?raw=true" alt="Vision Sound Hub Banner">
+</header>
+
+<!-- Η ΠΛΟΗΓΗΣΗ ΠΑΡΑΜΕΝΕΙ ΙΔΙΑ -->
+<nav class="main-navigation">
     <a href="#" class="nav-btn">Home</a>
     <a href="#" class="nav-btn">Pricing</a>
     <a href="#" class="nav-btn">Beats</a>
     <a href="#" class="nav-btn">Zairok (Manga)</a>
-</header>
+</nav>
 
 <main class="services-section">
     <h2 class="section-title">Τιμοκατάλογος Υπηρεσιών</h2>
@@ -525,7 +666,7 @@
                 </div>
                 <div class="service-body">
                     
-                    <div class="service-package" data-service-name="Μίξη (Mixing)" data-service-price="30">
+                    <div class="service-package" data-service-name="Μίξη (Mixing)" data-service-price="30" data-service-category="audio" data-service-info="Ρύθμιση επιπέδων, καθαρές φωνές, δυναμικά τύμπανα, καθαρισμός θορύβων & ισορροπία.">
                         <div class="service-package-header">
                             <h4>Μίξη (Mixing)</h4>
                             <span class="price">€30</span>
@@ -537,7 +678,7 @@
                         </ul>
                     </div>
 
-                    <div class="service-package" data-service-name="Mastering" data-service-price="20">
+                    <div class="service-package" data-service-name="Mastering" data-service-price="20" data-service-category="audio" data-service-info="Τελική ένταση (loudness), EQ, stereo image & glue. Έτοιμο για Spotify, YouTube, παντού.">
                          <div class="service-package-header">
                             <h4>Μάστερινγκ (Mastering)</h4>
                             <span class="price">€20</span>
@@ -552,17 +693,17 @@
                     <div class="extras-section">
                         <h4>Extras (Ισχύουν και για τις δύο υπηρεσίες)</h4>
                         <ul>
-                            <li data-service-name="Studio Session (Αττική - ανά ώρα)" data-service-price="10" data-quantifiable="true">
+                            <li data-service-name="Studio Session (Αττική - ανά ώρα)" data-service-price="10" data-service-category="audio" data-quantifiable="true" data-service-info="Ωριαία χρέωση για ηχογράφηση ή παραγωγή στο στούντιο (μόνο για Αττική).">
                                 <i class="fas fa-plus-circle"></i><strong>Studio Session (Αττική):</strong> +10€/ώρα
                             </li>
-                            <li data-service-name="Pitch Correction (Autotune)" data-service-price="10">
+                            <li data-service-name="Pitch Correction (Autotune)" data-service-price="10" data-service-category="audio" data-service-info="Επαγγελματική διόρθωση φωνητικών (intonation) με κορυφαία εργαλεία.">
                                 <i class="fas fa-plus-circle"></i><strong>Pitch Correction:</strong> +10€
                             </li>
-                            <li data-service-name="Extra Κανάλια (ανά 3)" data-service-price="5">
+                            <li data-service-name="Extra Κανάλια (ανά 3)" data-service-price="5" data-service-category="audio" data-quantifiable="true" data-service-info="Χρέωση για κάθε 3 επιπλέον κανάλια (stems) πέρα από το βασικό όριο.">
                                 <i class="fas fa-plus-circle"></i><strong>Extra Κανάλια:</strong> +5€ ανά 3 νέα κανάλια
                             </li>
                             <li><i class="fas fa-plus-circle"></i><strong>Διάρκεια:</strong> Μέχρι 3:30 λεπτά</li>
-                            <li data-service-name="Επιπλέον Χρόνος (ανά λεπτό)" data-service-price="7" data-quantifiable="true">
+                            <li data-service-name="Επιπλέον Χρόνος (ανά λεπτό)" data-service-price="7" data-service-category="audio" data-quantifiable="true" data-service-info="Χρέωση για κάθε επιπλέον λεπτό διάρκειας του κομματιού πέρα από τα 3:30.">
                                 <i class="fas fa-plus-circle"></i><strong>Επιπλέον Χρόνος:</strong> +7€ για κάθε επόμενο λεπτό
                             </li>
                         </ul>
@@ -571,25 +712,7 @@
             </div>
         </div>
 
-        <!-- Service 2: Music for Brands -->
-        <div class="accordion-item">
-            <button class="service-toggle-btn">
-                <span><i class="fas fa-copyright"></i> Music for Brands / Sync Licensing</span>
-                <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="service-content">
-                <div class="service-header">
-                    <p class="tagline">Original μουσική για την καμπάνια, τη διαφήμιση, τη σειρά ή το game σου.</p>
-                </div>
-                <div class="service-body">
-                     <p class="description">
-                        Δουλεύω custom tracks για εμπορική χρήση. Επικοινώνησε μαζί μου για να συζητήσουμε τις ανάγκες του project σου και τις επιλογές licensing.
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Service 3: Covers & Visuals -->
+        <!-- Service 2: Covers & Visuals -->
         <div class="accordion-item">
             <button class="service-toggle-btn">
                 <span><i class="fas fa-palette"></i> Covers & Visuals</span>
@@ -601,28 +724,22 @@
                 </div>
                 <div class="service-body">
                     <table class="visuals-table">
-                        <thead>
-                            <tr>
-                                <th>Υπηρεσία</th>
-                                <th style="text-align: right;">Τιμή</th>
-                            </tr>
-                        </thead>
                         <tbody>
-                            <tr data-service-name="SoulBlend Cover" data-service-price="35">
+                            <tr data-service-name="SoulBlend Cover" data-service-price="35" data-service-category="visual" data-service-info="Δημιουργία εξωφύλλου με συνδυασμό AI και επεξεργασίας στο Photoshop για ένα μοναδικό, curated αποτέλεσμα.">
                                 <td>
                                     <div class="service-name">SoulBlend</div>
                                     <small>AI + Photoshop, curated art image</small>
                                 </td>
                                 <td class="service-price">35–50€</td>
                             </tr>
-                            <tr data-service-name="AlterMe Cover" data-service-price="50">
+                            <tr data-service-name="AlterMe Cover" data-service-price="50" data-service-category="visual" data-service-info="Μετατρέπουμε τη φωτογραφία σας σε έναν μοναδικό χαρακτήρα (π.χ. anime, cartoon, fantasy) για το εξώφυλλό σας.">
                                 <td>
                                     <div class="service-name">AlterMe</div>
                                     <small>Μεταμόρφωση από φωτογραφία σε χαρακτήρα</small>
                                 </td>
                                 <td class="service-price">50–70€</td>
                             </tr>
-                            <tr data-service-name="RAWtoCOVER" data-service-price="40">
+                            <tr data-service-name="RAWtoCOVER" data-service-price="40" data-service-category="visual" data-service-info="Επαγγελματική επεξεργασία (color grading, retouching) της δικής σας φωτογραφίας για να γίνει ένα εντυπωσιακό εξώφυλλο.">
                                 <td>
                                     <div class="service-name">RAWtoCOVER</div>
                                     <small>Επεξεργασία πραγματικής φωτογραφίας</small>
@@ -631,14 +748,11 @@
                             </tr>
                         </tbody>
                     </table>
-                    <p class="delivery-info">
-                        Παράδοση σε όλα τα formats: Instagram Post, Reel, Facebook & YouTube Banner, Spotify Cover.
-                    </p>
                 </div>
             </div>
         </div>
         
-        <!-- Service 4: Video Editing -->
+        <!-- Service 3: Video Editing -->
         <div class="accordion-item">
             <button class="service-toggle-btn">
                 <span><i class="fas fa-video"></i> Video Editing & Promos</span>
@@ -646,105 +760,41 @@
             </button>
             <div class="service-content">
                 <div class="service-body">
+                    <div data-service-name="SocialScroll (1 video)" data-service-price="60" data-service-category="video" data-service-info="Δημιουργία 1 promo video με εικόνες και stock footage, ιδανικό για social media."></div>
+                    <div data-service-name="Artist Single Reel Pack" data-service-price="55" data-service-category="video" data-service-info="Περιλαμβάνει 1-2 ώρες γύρισμα, μοντάζ για 1 τελικό reel και παράδοση των raw αρχείων."></div>
+                    <div data-service-name="AI Single Promo Video" data-service-price="140" data-service-category="video" data-service-info="Δημιουργία 1 promo video (15-30 δευτ.) με την τεχνολογία AI της Google (VEo 3), μαζί με επαγγελματικό μοντάζ."></div>
+                    
                     <h4>SocialScroll</h4>
                     <p class="tagline" style="margin-top: -0.5rem; margin-bottom: 1rem;">Promo videos με εικόνες & stock footage.</p>
                     <table class="visuals-table">
                          <tbody>
-                            <tr data-service-name="SocialScroll (1 video)" data-service-price="60">
-                                <td>1 video</td>
-                                <td class="service-price">60€</td>
-                            </tr>
-                            <tr data-service-name="SocialScroll (3-pack)" data-service-price="150">
-                                <td>3-pack</td>
-                                <td class="service-price">150€</td>
-                            </tr>
-                        </tbody>
+                            <tr><td>1 video</td><td class="service-price">60€</td></tr>
+                            <tr><td>3-pack</td><td class="service-price">150€</td></tr>
+                         </tbody>
                     </table>
 
                     <h4>ReCut</h4>
-                    <p class="tagline" style="margin-top: -0.5rem; margin-bottom: 1rem;">Μοντάζ με πλάνα του πελάτη.</p>
+                     <p class="tagline" style="margin-top: -0.5rem; margin-bottom: 1rem;">Μοντάζ με πλάνα του πελάτη.</p>
                     <table class="visuals-table">
                         <tbody>
-                            <tr data-service-name="ReCut (1 video)" data-service-price="80">
+                            <tr data-service-name="ReCut (1 video)" data-service-price="80" data-service-category="video" data-service-info="Αναλαμβάνουμε το μοντάζ του δικού σας υλικού για τη δημιουργία 1 τελικού video.">
                                 <td>1 video</td>
                                 <td class="service-price">80–100€</td>
-                            </tr>
-                             <tr data-service-name="ReCut (3-pack)" data-service-price="210">
-                                <td>3-pack</td>
-                                <td class="service-price">210–230€</td>
                             </tr>
                         </tbody>
                     </table>
 
                     <h4>Artist Shot+Cut</h4>
                     <table class="visuals-table">
-                         <thead>
-                            <tr>
-                                <th>Πακέτο</th>
-                                <th>Περιγραφή</th>
-                                <th style="text-align: right;">Τιμή</th>
-                            </tr>
-                        </thead>
                         <tbody>
-                            <tr data-service-name="Artist Single Reel Pack" data-service-price="55">
-                                <td>Single Reel Pack</td>
-                                <td>1 γύρισμα (1–2 ώρες), 1 reel, raw αρχεία</td>
-                                <td class="service-price">55–60€</td>
-                            </tr>
-                             <tr data-service-name="Artist 4x Reel Pack" data-service-price="170">
-                                <td>4x Reel Pack</td>
-                                <td>1 μέρα γύρισμα (έως 3 ώρες), 4 reels, raw αρχεία</td>
-                                <td class="service-price">170€</td>
-                            </tr>
+                            <tr><td>Single Reel Pack</td><td>1 γύρισμα (1–2 ώρες), 1 reel, raw αρχεία</td><td class="service-price">55–60€</td></tr>
                         </tbody>
                     </table>
-                     <p class="tech-specs">
-                        Color grading, text animation, pro editing (rotoscoping effects ανάλογα το ύφος).
-                    </p>
 
-                    <h4>Business Shot+Cut</h4>
-                     <table class="visuals-table">
-                         <thead>
-                            <tr>
-                                <th>Πακέτο</th>
-                                <th>Περιγραφή</th>
-                                <th style="text-align: right;">Τιμή</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr data-service-name="Business 2 Reels Pack" data-service-price="150">
-                                <td>2 Reels Pack</td>
-                                <td>1–2 ώρες γύρισμα, 2 reels, raw αρχεία</td>
-                                <td class="service-price">150€</td>
-                            </tr>
-                             <tr data-service-name="Business 4 Reels Pack" data-service-price="260">
-                                <td>4 Reels Pack</td>
-                                <td>1–4 ώρες γύρισμα, 4 reels, raw αρχεία</td>
-                                <td class="service-price">260€</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    
                     <h4><i class="fas fa-robot"></i> AI Video με VEo 3 – Vision Sound Cut</h4>
                      <table class="visuals-table">
-                         <thead>
-                            <tr>
-                                <th>Πακέτο</th>
-                                <th>Περιγραφή</th>
-                                <th style="text-align: right;">Τιμή</th>
-                            </tr>
-                        </thead>
                         <tbody>
-                            <tr data-service-name="AI Single Promo Video" data-service-price="140">
-                                <td>Single Promo Video</td>
-                                <td>1 video 15–30 δευτ. + μοντάζ</td>
-                                <td class="service-price">140€</td>
-                            </tr>
-                             <tr data-service-name="AI Full Concept Video" data-service-price="180">
-                                <td>Full Concept Video</td>
-                                <td>3–5 VEo clips + storytelling</td>
-                                <td class="service-price">180–220€</td>
-                            </tr>
+                            <tr><td>Single Promo Video</td><td>1 video 15–30 δευτ. + μοντάζ</td><td class="service-price">140€</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -760,14 +810,25 @@
     </div>
 </main>
 
+<!-- ΝΕΟ FOOTER -->
+<footer class="site-footer">
+    <div class="footer-links">
+        <a href="mailto:studiovisionsound@gmail.com"><i class="fas fa-envelope"></i> Email</a>
+        <a href="https://www.instagram.com/visionsoundhub.gr" target="_blank" rel="noopener noreferrer"><i class="fab fa-instagram"></i> Instagram</a>
+        <a href="https://www.tiktok.com/@visionsoundhub" target="_blank" rel="noopener noreferrer"><i class="fab fa-tiktok"></i> TikTok</a>
+    </div>
+    <p class="copyright-text">&copy; 2024 Vision Sound. All rights reserved.</p>
+</footer>
+
+
 <!-- Mix & Match Modal -->
 <div id="mix-match-modal" class="modal-overlay">
     <div class="modal-content">
         <span class="modal-close" id="mix-match-close-btn">&times;</span>
         <h3>Φτιάξε το Πακέτο σου</h3>
-        <ul class="service-selection-list" id="service-selection-list">
+        <div class="service-selection-container" id="service-selection-container">
             <!-- Services will be populated by JavaScript -->
-        </ul>
+        </div>
         
         <div class="total-price-display">
             <span class="total-label">Ενδεικτική Τιμή</span>
@@ -779,12 +840,8 @@
             <button id="copy-quote-btn" class="btn-copy-quote">
                 <i class="fas fa-copy"></i> Αντιγραφή Κειμένου
             </button>
-            <span id="copy-feedback" class="copy-feedback">Αντιγράφηκε!</span>
-        
-        <button id="close-modal-btn" class="btn-copy-quote" style="margin-top: 1.5rem; background: transparent; border: 1px solid #888; color: #ccc;">
-            <i class="fas fa-times"></i> Κλείσιμο
-        </button>
-</div>
+            <button id="close-modal-btn" class="btn-close-modal">Κλείσιμο</button>
+        </div>
     </div>
 </div>
 
@@ -797,11 +854,12 @@ document.addEventListener('DOMContentLoaded', function () {
     const openMixMatchBtn = document.getElementById('open-mix-match-btn');
     const mixMatchModal = document.getElementById('mix-match-modal');
     const mixMatchCloseBtn = document.getElementById('mix-match-close-btn');
-    const serviceSelectionList = document.getElementById('service-selection-list');
+    const serviceSelectionContainer = document.getElementById('service-selection-container');
     const totalPriceEl = document.getElementById('total-price');
     const quoteTextarea = document.getElementById('quote-textarea');
     const copyQuoteBtn = document.getElementById('copy-quote-btn');
     const copyFeedback = document.getElementById('copy-feedback');
+    const closeModalBtn = document.getElementById('close-modal-btn');
 
     // --- ACCORDION LOGIC ---
     accordionItems.forEach(item => {
@@ -834,55 +892,122 @@ document.addEventListener('DOMContentLoaded', function () {
             services.push({
                 name: el.dataset.serviceName,
                 price: parseFloat(el.dataset.servicePrice),
-                quantifiable: el.dataset.quantifiable === 'true'
+                quantifiable: el.dataset.quantifiable === 'true',
+                category: el.dataset.serviceCategory || 'other',
+                info: el.dataset.serviceInfo || 'Δεν υπάρχουν πληροφορίες.'
             });
         });
         return services;
     }
 
     function populateMixMatchList(services) {
-        serviceSelectionList.innerHTML = '';
-        services.forEach((service, index) => {
-            const li = document.createElement('li');
-            li.dataset.name = service.name;
-            li.dataset.price = service.price;
+        serviceSelectionContainer.innerHTML = '';
 
-            if (service.quantifiable) {
-                li.dataset.quantifiable = true;
-                li.innerHTML = `
-                    <div class="item-details">
-                        <span class="item-name">${service.name}</span>
-                    </div>
-                    <div class="quantity-selector">
-                        <button class="quantity-btn minus" aria-label="Μείωση ποσότητας">-</button>
-                        <input type="number" class="quantity-input" value="0" min="0" readonly>
-                        <button class="quantity-btn plus" aria-label="Αύξηση ποσότητας">+</button>
-                    </div>
-                `;
-            } else {
-                li.innerHTML = `
-                    <label for="service-${index}">
-                        <div class="item-details">
-                            <span class="item-name">${service.name}</span>
-                        </div>
-                        <span class="item-price">€${service.price}</span>
-                        <input type="checkbox" id="service-${index}">
-                    </label>
-                `;
+        const groupedServices = services.reduce((acc, service) => {
+            const category = service.category;
+            if (!acc[category]) {
+                acc[category] = [];
             }
-            serviceSelectionList.appendChild(li);
+            acc[category].push(service);
+            return acc;
+        }, {});
+
+        const categoryOrder = ['audio', 'visual', 'video', 'other'];
+
+        categoryOrder.forEach(categoryKey => {
+            if (groupedServices[categoryKey]) {
+                const categoryContainer = document.createElement('div');
+                categoryContainer.className = 'modal-accordion-item';
+
+                const categoryButton = document.createElement('button');
+                categoryButton.className = 'modal-category-toggle';
+                categoryButton.innerHTML = `<span>${categoryKey}</span><i class="fas fa-chevron-down"></i>`;
+                
+                const categoryContent = document.createElement('div');
+                categoryContent.className = 'modal-category-content';
+                
+                const serviceList = document.createElement('ul');
+                serviceList.className = 'service-selection-list';
+
+                groupedServices[categoryKey].forEach((service, index) => {
+                    const li = document.createElement('li');
+                    li.dataset.name = service.name;
+                    li.dataset.price = service.price;
+
+                    const infoIconHTML = `<span class="info-icon">i<span class="info-tooltip">${service.info}</span></span>`;
+
+                    if (service.quantifiable) {
+                        li.dataset.quantifiable = true;
+                        li.innerHTML = `
+                            <div class="item-details">
+                                <span class="item-name">${service.name}</span>
+                                ${infoIconHTML}
+                            </div>
+                            <div class="quantity-selector">
+                                <button class="quantity-btn minus" aria-label="Μείωση ποσότητας">-</button>
+                                <input type="number" class="quantity-input" value="0" min="0" readonly>
+                                <button class="quantity-btn plus" aria-label="Αύξηση ποσότητας">+</button>
+                            </div>
+                        `;
+                    } else {
+                        li.innerHTML = `
+                            <label for="service-${categoryKey}-${index}">
+                                <div class="item-details">
+                                    <span class="item-name">${service.name}</span>
+                                    ${infoIconHTML}
+                                </div>
+                                <span class="item-price">€${service.price}</span>
+                                <input type="checkbox" id="service-${categoryKey}-${index}">
+                            </label>
+                        `;
+                    }
+                    serviceList.appendChild(li);
+                });
+                
+                categoryContent.appendChild(serviceList);
+                categoryContainer.appendChild(categoryButton);
+                categoryContainer.appendChild(categoryContent);
+                serviceSelectionContainer.appendChild(categoryContainer);
+            }
         });
+
         addServiceListeners();
+        addModalAccordionListeners();
+    }
+    
+    function addModalAccordionListeners() {
+        const toggles = serviceSelectionContainer.querySelectorAll('.modal-category-toggle');
+        toggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const content = toggle.nextElementSibling;
+                const wasActive = toggle.classList.contains('active');
+
+                // Close all other toggles
+                toggles.forEach(otherToggle => {
+                    if (otherToggle !== toggle) {
+                        otherToggle.classList.remove('active');
+                        otherToggle.nextElementSibling.classList.remove('visible');
+                    }
+                });
+
+                // Toggle the clicked one
+                if (!wasActive) {
+                    toggle.classList.add('active');
+                    content.classList.add('visible');
+                } else {
+                     toggle.classList.remove('active');
+                     content.classList.remove('visible');
+                }
+            });
+        });
     }
 
     function addServiceListeners() {
-        // Checkbox listeners
-        serviceSelectionList.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
+        serviceSelectionContainer.querySelectorAll('input[type="checkbox"]').forEach(checkbox => {
             checkbox.addEventListener('change', updateQuoteAndPrice);
         });
 
-        // Quantity button listeners
-        serviceSelectionList.querySelectorAll('.quantity-btn').forEach(button => {
+        serviceSelectionContainer.querySelectorAll('.quantity-btn').forEach(button => {
             button.addEventListener('click', () => {
                 const input = button.parentElement.querySelector('.quantity-input');
                 let currentValue = parseInt(input.value, 10);
@@ -901,8 +1026,7 @@ document.addEventListener('DOMContentLoaded', function () {
         let total = 0;
         let servicesList = '';
         
-        // Process all service list items
-        serviceSelectionList.querySelectorAll('li').forEach(li => {
+        serviceSelectionContainer.querySelectorAll('li').forEach(li => {
             const name = li.dataset.name;
             const price = parseFloat(li.dataset.price);
 
@@ -971,12 +1095,9 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // --- EVENT LISTENERS ---
-    const closeModalBtn = document.getElementById('close-modal-btn');
-    if (closeModalBtn) {
-        closeModalBtn.addEventListener('click', closeMixMatchModal);
-    }
     openMixMatchBtn.addEventListener('click', openMixMatchModal);
     mixMatchCloseBtn.addEventListener('click', closeMixMatchModal);
+    closeModalBtn.addEventListener('click', closeMixMatchModal);
     mixMatchModal.addEventListener('click', e => {
         if (e.target === mixMatchModal) {
             closeMixMatchModal();
@@ -985,20 +1106,6 @@ document.addEventListener('DOMContentLoaded', function () {
     copyQuoteBtn.addEventListener('click', copyQuoteToClipboard);
 
 });
-</script>
-
-
-<script>
-  function sendHeightToParent() {
-    const height = document.body.scrollHeight;
-    parent.postMessage({ type: "resize-iframe", height: height }, "*");
-  }
-
-  window.addEventListener("load", sendHeightToParent);
-  window.addEventListener("resize", sendHeightToParent);
-
-  const observer = new MutationObserver(sendHeightToParent);
-  observer.observe(document.body, { childList: true, subtree: true });
 </script>
 
 </body>
